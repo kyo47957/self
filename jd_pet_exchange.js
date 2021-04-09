@@ -31,8 +31,7 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
         $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         continue
       }
-	  let a = get_diff_time();
-	  console.log(`\n*****${a}****\n`);
+	  console.log(`\n*****${await get_diff_time()}****\n`);
       //await joyReward();
     }
   }
