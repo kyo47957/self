@@ -168,7 +168,7 @@ function TotalBean() {
 
 function getJDServerTime() {
   return new Promise(resolve => {
-    $.get({url: "https://a.jd.com//ajax/queryServerData.html",headers:{
+    $.get({url: "https://api.m.jd.com/client.action?functionId=queryMaterialProducts&client=wh5",headers:{
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       }}, async (err, resp, data) => {
       try {
@@ -178,7 +178,7 @@ function getJDServerTime() {
         } else {
 	  console.log(`${data}`)
           data = JSON.parse(data);
-          $.jdTime = data['serverTime'];
+          $.jdTime = data['currentTime2'];
         }
       } catch (e) {
         $.logErr(e, resp)
@@ -191,9 +191,7 @@ function getJDServerTime() {
 
 async function get_diff_time() {
   console.log(`本机时间戳 ${Date.now()}`);
-  var d = new Date()
-var gmtHours = d.getTimezoneOffset();
-  console.log(`京东服务器时间戳 ${gmtHours}`)
+  console.log(`京东服务器时间戳 ${await getJDServerTime()}`)
   return Date.now();// - await getJDServerTime();
 }
 
