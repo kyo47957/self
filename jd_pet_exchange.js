@@ -195,8 +195,8 @@ function get_diff_time() {
 	var year=today.getFullYear();
 	var month=today.getMonth();
 	var day=today.getDate();
-	var hour=today.getHours()+1;
-  	var d=(new Date(year,month,day,hour,25,0)).getTime();
+	var hour=today.getHours();
+  	var d=(new Date(year,month,day,hour,30,0)).getTime();
 	console.log(`${d}`);
   var jd=await getJDServerTime();
   return d - jd -100;
