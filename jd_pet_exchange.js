@@ -33,7 +33,7 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
       }
 		var it=await get_diff_time();
 		console.log(`${it}`);
-		setTimeout(console.log(`${Date.now()}`),it);
+		setTimeout(function(){console.log(`${Date.now()}`)},it);
       //await joyReward();
     }
   }
@@ -196,7 +196,7 @@ async function get_diff_time() {
 	var month=today.getMonth();
 	var day=today.getDate();
 	var hour=today.getHours();
-  	var d=(new Date(year,month,day,hour,40,0)).getTime();
+  	var d=(new Date(year,month,day,hour,46,0)).getTime();
 	console.log(`${d}`);
   	var jd=await getJDServerTime();
 	console.log(`${jd}`);
