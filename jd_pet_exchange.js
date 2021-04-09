@@ -33,7 +33,9 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
       }
 		var it=await get_diff_time();
 		console.log(`${it}`);
-		setTimeout(function(){console.log(`${Date.now()}`)},it);
+	    await print(it);
+		//setTimeout(function(){},it);
+	    	//console.log(`${Date.now()}`);
       //await joyReward();
     }
   }
@@ -45,7 +47,10 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
       $.done();
     })
 
-
+function print(it)
+{
+  return new Promise(resolve => {setTimeout(function(){console.log(`${Date.now()}`);resolve();},it)});
+}
 async function joyReward() {
 	try {	    
 		await exchange(339, 'pet');
@@ -196,7 +201,8 @@ async function get_diff_time() {
 	var month=today.getMonth();
 	var day=today.getDate();
 	var hour=today.getHours();
-  	var d=(new Date(year,month,day,hour,46,0)).getTime();
+	var min=today.getMinutes()+1;
+  	var d=(new Date(year,month,day,hour,min,0)).getTime();
 	console.log(`${d}`);
   	var jd=await getJDServerTime();
 	console.log(`${jd}`);
