@@ -176,6 +176,7 @@ function getJDServerTime() {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} 获取京东服务器时间失败，请检查网路重试`)
         } else {
+	  console.log(`${data}`)
           data = JSON.parse(data);
           $.jdTime = data['serverTime'];
         }
