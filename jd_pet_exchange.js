@@ -193,14 +193,8 @@ async function get_diff_time() {
 	var year=today.getFullYear();
 	var month=today.getMonth();
 	var day=today.getDate();
-	var hour=today.getHours();
-	if (hour==23) {
-		day=day+1;
-		hour=0;
-	} else {
-		hour=hour+1;
-	}
-  var d=(new Date(year,month,day,hour,18,0)).getTime();
+	var hour=today.getHours()+1;
+  	var d=(new Date(year,month,day,hour,21,0)).getTime();
 	console.log(`${d}`);
   var jd=await getJDServerTime();
   return d - jd -100;
