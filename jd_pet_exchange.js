@@ -31,7 +31,7 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
         $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         continue
       }
-	  console.log(`\n*****${await get_diff_time()}****\n`);
+	  console.log(`${await get_diff_time()}`);
       //await joyReward();
     }
   }
@@ -189,6 +189,8 @@ function getJDServerTime() {
 }
 
 async function get_diff_time() {
+  console.log(`本机时间戳 ${Date.now()}`)
+  console.log(`京东服务器时间戳 ${await getJDServerTime()}`)
   return Date.now() - await getJDServerTime();
 }
 
