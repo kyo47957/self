@@ -31,9 +31,9 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
         $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
         continue
       }
-	    var it=get_diff_time();
-	    console.log(`${it}`)
-	  setTimeout(console.log(`${Date.now()}`),it);
+	    var it=await get_diff_time();
+	    console.log(`${it}`);
+	  //setTimeout(console.log(`${Date.now()}`),it);
       //await joyReward();
     }
   }
@@ -190,16 +190,17 @@ function getJDServerTime() {
   })
 }
 
-function get_diff_time() {
+async function get_diff_time() {
 	var today=new Date();
 	var year=today.getFullYear();
 	var month=today.getMonth();
 	var day=today.getDate();
 	var hour=today.getHours();
-  	var d=(new Date(year,month,day,hour,30,0)).getTime();
+  	var d=(new Date(year,month,day,hour,40,0)).getTime();
 	console.log(`${d}`);
-  var jd=await getJDServerTime();
-  return d - jd -100;
+  	var jd=await getJDServerTime();
+	console.log(`${jd}`);
+  	return d - jd -100;
 }
 
 function jsonParse(str) {
