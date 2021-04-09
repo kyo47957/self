@@ -176,8 +176,7 @@ function getJDServerTime() {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} 获取京东服务器时间失败，请检查网路重试`)
         } else {
-	  data = JSON.parse(data);
-	  console.log(`${data['currentTime']}`);         
+	  data = JSON.parse(data);       
           $.jdTime = data['currentTime2'];
         }
       } catch (e) {
@@ -191,8 +190,9 @@ function getJDServerTime() {
 
 async function get_diff_time() {
   console.log(`本机时间戳 ${Date.now()}`);
+  var d1=new Date('2021-04-09 18:10:00');
   var d=(new Date('2021-04-09 18:10:00')).getTime();
-  console.log(`时间戳 ${(new Date('2021-04-09 18:10:00')).getTime()}`);
+  console.log(`时间戳 ${d1}`);
   var jd=await getJDServerTime();
   console.log(`京东服务器时间戳 ${jd}`);
   return d - jd;
