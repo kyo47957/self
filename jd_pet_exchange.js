@@ -190,7 +190,7 @@ function getJDServerTime() {
 
 async function get_diff_time() {
   console.log(`本机时间戳 ${Date.now()}`);
-  var d1=new Date('2021-04-09 18:10:00');
+  var d1=new Date(`2021-04-09 18:10:00`);
   var d=(new Date('2021-04-09 18:10:00')).getTime();
   console.log(`时间戳 ${d1}`);
   var jd=await getJDServerTime();
