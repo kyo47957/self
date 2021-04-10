@@ -52,34 +52,7 @@ function sleep(it)
   return new Promise(resolve => {setTimeout(function(){console.log(`${当前时间：${Date.now()}}`);resolve();},it)});
 }
 async function joyReward() {
-	try {	    
-		await exchange(339, 'pet');
-		if ($.exchangeRes && $.exchangeRes.success) {
-		  if ($.exchangeRes.errorCode === 'buy_success') {				
-			console.log(`\n兑换成功\n`)
-			if ($.getdata('jdJoyRewardNotify')) {
-			  $.ctrTemp = $.getdata('jdJoyRewardNotify') === 'false';
-			} else {
-			  $.ctrTemp = `${jdNotify}` === 'false';
-			}
-			if ($.ctrTemp) {
-			  $.msg($.name, ``, `【京东账号${$.index}】${$.nickName}\n 兑换成功`);
-			}
-		  } else if ($.exchangeRes && $.exchangeRes.errorCode === 'buy_limit') {
-			console.log(`\n兑换失败，原因：兑换京豆已达上限，请把机会留给更多的小伙伴~\n`)				
-		  } else if ($.exchangeRes && $.exchangeRes.errorCode === 'stock_empty'){
-			console.log(`\n兑换失败，原因：当前京豆库存为空\n`)
-		  } else if ($.exchangeRes && $.exchangeRes.errorCode === 'insufficient'){
-			console.log(`\n兑换失败，原因：当前账号积分不足\n`)
-		  } else {
-			console.log(`\n兑奖失败:${JSON.stringify($.exchangeRes)}`)
-		  }
-		} else {
-		  console.log(`\n兑换京豆异常:${JSON.stringify($.exchangeRes)}`)
-		}
-	} catch (e) {
-		$.logErr(e)
-	}
+	console.log(`${Date.now()}`);
 }
 
 function exchange(saleInfoId, orderSource) {
@@ -201,6 +174,7 @@ async function get_diff_time() {
 	var year=today.getFullYear();
 	var month=today.getMonth();
 	var day=today.getDate();
+<<<<<<< HEAD
 	var hour=today.getHours()+1;
 	if (hour==24){
 		hour=0;
@@ -211,6 +185,15 @@ async function get_diff_time() {
   	var jd=await getJDServerTime();
 	console.log(`京东时间:${jd}`);
   	return d - jd -50;
+=======
+	var hour=today.getHours();
+	var min=today.getMinutes()+1;
+  	var d=(new Date(year,month,day,hour,min,0)).getTime();
+	console.log(`${d}`);
+  	var jd=await getJDServerTime();
+	console.log(`${jd}`);
+  	return d - jd -100;
+>>>>>>> parent of 1e1c0a7 (Update jd_pet_exchange.js)
 }
 
 function jsonParse(str) {
