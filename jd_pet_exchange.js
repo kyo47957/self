@@ -15,27 +15,28 @@ let cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.
 let cookie = '';
 const JD_API_HOST = 'https://jdjoy.jd.com';
 !(async () => {
-  if (!cookiesArr[0]) {
-    $.msg('【京东账号一】宠汪汪积分兑换奖品失败', '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
-  }
-  for (let i = 0; i < cookiesArr.length; i++) {
-    if (cookiesArr[i]) {
-      cookie = cookiesArr[i];
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-      $.index = i + 1;
-      $.isLogin = true;
-      $.nickName = '' || $.UserName;
-      await TotalBean();
-      console.log(`\n*****开始【京东账号${$.index}】${$.nickName || $.UserName}****\n`);
-      if (!$.isLogin) {
-        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
-        continue
-      }
+	if (!cookiesArr[0]) {
+		$.msg('【京东账号一】宠汪汪积分兑换奖品失败', '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
+	}
+	for (let i = 0; i < cookiesArr.length; i++) {
+	if (cookiesArr[i]) {
+		cookie = cookiesArr[i];
+		$.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+		$.index = i + 1;
+		$.isLogin = true;
+		$.nickName = '' || $.UserName;
+		await TotalBean();
+		console.log(`\n*****开始【京东账号${$.index}】${$.nickName || $.UserName}****\n`);
+		if (!$.isLogin) {
+			$.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
+			continue
+		}
 		var it=await get_diff_time();
-		console.log(`${it}`);
-	    	await sleep(it);
-      		await joyReward();
-    }
+		console.log(`等待间隔：${it}`);
+		console.log(`当前时间：${Date.now()}`);
+		await sleep(it);
+		//await joyReward();
+	}
   }
 })()
     .catch((e) => {
@@ -47,7 +48,7 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
 
 function sleep(it)
 {
-  return new Promise(resolve => {setTimeout(function(){console.log(`${Date.now()}`);resolve();},it)});
+  return new Promise(resolve => {setTimeout(function(){console.log(`${当前时间：${Date.now()}}`);resolve();},it)});
 }
 async function joyReward() {
 	try {	    
@@ -126,6 +127,7 @@ function exchange(saleInfoId, orderSource) {
     });
   })
 }
+
 function TotalBean() {
   return new Promise(async resolve => {
     const options = {
@@ -204,9 +206,9 @@ async function get_diff_time() {
 		day=day+1;
 	}
   	var d=(new Date(year,month,day,hour,0,0)).getTime();
-	console.log(`${d}`);
+	console.log(`目标时间:${d}`);
   	var jd=await getJDServerTime();
-	console.log(`${jd}`);
+	console.log(`京东时间:${jd}`);
   	return d - jd -50;
 }
 
