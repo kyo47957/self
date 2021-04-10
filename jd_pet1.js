@@ -2,7 +2,7 @@
  * @Author: sq
  * @Date: 2021-04-10 19:00:00
  * @Last Modified by: sq
- * @Last Modified time: 2021-04-10 20:49:00
+ * @Last Modified time: 2021-04-10 21:50:00
  */
 
 // prettier-ignore
@@ -106,13 +106,12 @@ async function joyReward() {
 				var month=today.getMonth();
 				var day=today.getDate();
 				var hour=today.getHours();
-				var min=today.getMinutes()+1;
-				if (hour==24){
-				  hour=0;
-				  day=day+1;
-				}
-				if (hour == 0 || hour == 8 || hour == 16 || hour < 24) {
-					var d=(new Date(year,month,day,hour,min,0)).getTime();
+				if (hour == 23 || hour == 7 || hour == 15) {
+					if (hour==23){
+					  hour=0;
+					  day=day+1;
+					}
+					var d=(new Date(year,month,day,hour,0,0)).getTime();
 					console.log(`目标时间:${d}`);
 					var jd=await getJDServerTime();
 					console.log(`京东时间:${jd}`);
@@ -159,7 +158,7 @@ async function joyReward() {
 }
 
 function sleep(it) {
-  return new Promise(resolve => {setTimeout(function(){console.log(`当前时间：${Date.now()}`);resolve();},it)});
+  return new Promise(resolve => {setTimeout(function(){console.log(`当前时间：${Date.now()}`);resolve();},it-50)});
 }
 
 function getExchangeRewards() {
