@@ -2,7 +2,7 @@
  * @Author: sq
  * @Date: 2021-04-10 19:00:00
  * @Last Modified by: sq
- * @Last Modified time: 2021-04-10 20:21:00
+ * @Last Modified time: 2021-04-10 20:49:00
  */
 
 // prettier-ignore
@@ -105,7 +105,7 @@ async function joyReward() {
 				var year=today.getFullYear();
 				var month=today.getMonth();
 				var day=today.getDate();
-				var hour=today.getHours()+1;
+				var hour=today.getHours();
 				var min=today.getMinutes()+1;
 				if (hour==24){
 				  hour=0;
