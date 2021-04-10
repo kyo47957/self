@@ -2,7 +2,7 @@
  * @Author: sq
  * @Date: 2021-04-10 19:00:00
  * @Last Modified by: sq
- * @Last Modified time: 2021-04-10 20:00:00
+ * @Last Modified time: 2021-04-10 20:03:00
  */
 
 // prettier-ignore
@@ -110,8 +110,12 @@ async function joyReward() {
 				  hour=0;
 				  day=day+1;
 				}
+				hour=0;
 				if (hour == 0 || hour == 8 || hour == 16) {
-					console.log(`\n您设置的兑换${giftValue}京豆库存充足,开始为您兑换${giftValue}京豆\n`);
+					var d=(new Date(year,month,day,hour,0,0)).getTime();
+					console.log(`目标时间:${d}`);
+					var jd=await getJDServerTime();
+					console.log(`京东时间:${jd}`);
 					await exchange(saleInfoId, 'pet');
 					if ($.exchangeRes && $.exchangeRes.success) {
 						if ($.exchangeRes.errorCode === 'buy_success') {
@@ -137,7 +141,7 @@ async function joyReward() {
 						console.log(`\n兑换京豆异常:${JSON.stringify($.exchangeRes)}`)
 					}
 				} else {
-					console.log(`$当前不是兑换时间`)			  
+					console.log(`当前不是兑换时间`)			  
 				}
 			} else {
 				console.log(`\n您设置了不兑换京豆,如需兑换京豆，请去BoxJs处设置或修改joyRewardName代码或设置环境变量 JD_JOY_REWARD_NAME`)
@@ -288,8 +292,7 @@ function TotalBean() {
 
 function getJDServerTime() {
   return new Promise(resolve => {
-    // console.log(Date.now())
-    $.get({url: "https://a.jd.com//ajax/queryServerData.html",headers:{
+    $.get({url: "https://api.m.jd.com/client.action?functionId=queryMaterialProducts&client=wh5",headers:{
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
       }}, async (err, resp, data) => {
       try {
@@ -298,9 +301,7 @@ function getJDServerTime() {
           console.log(`${$.name} 获取京东服务器时间失败，请检查网路重试`)
         } else {
           data = JSON.parse(data);
-          $.jdTime = data['serverTime'];
-          // console.log(data['serverTime']);
-          // console.log(data['serverTime'] - Date.now())
+          $.jdTime = data['currentTime2'];
         }
       } catch (e) {
         $.logErr(e, resp)
@@ -310,6 +311,7 @@ function getJDServerTime() {
     })
   })
 }
+
 async function get_diff_time() {  
   return Date.now() - await getJDServerTime();
 }
