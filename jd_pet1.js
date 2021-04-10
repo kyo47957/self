@@ -2,7 +2,7 @@
  * @Author: sq
  * @Date: 2021-04-10 19:00:00
  * @Last Modified by: sq
- * @Last Modified time: 2021-04-10 19:00:00
+ * @Last Modified time: 2021-04-10 19:51:00
  */
 
 // prettier-ignore
@@ -89,7 +89,6 @@ async function joyReward() {
       if (time >= 16 && time < 24) {
         giftSaleInfos = 'beanConfigs16';
       }
-      console.log(`\ndebug场次:${giftSaleInfos}\n`)
       for (let item of data[giftSaleInfos]) {
         console.log(`${item['giftName']}当前库存:${item['leftStock']}，id：${item.id}`)
         if (item.giftType === 'jd_bean' && item['giftValue'] === rewardNum) {
@@ -103,36 +102,49 @@ async function joyReward() {
       if (rewardNum && (rewardNum === 1 || rewardNum === 20 || rewardNum === 50 || rewardNum === 100 || rewardNum === 500 || rewardNum === 1000)) {
         //开始兑换
 		if (!saleInfoId) return
-		console.log(`\n您设置的兑换${giftValue}京豆库存充足,开始为您兑换${giftValue}京豆\n`);
-		await exchange(saleInfoId, 'pet');
-		if ($.exchangeRes && $.exchangeRes.success) {
-		  if ($.exchangeRes.errorCode === 'buy_success') {
-			console.log(`\n兑换${giftValue}成功,【消耗积分】${salePrice}个\n`)
-			if ($.isNode() && process.env.JD_JOY_REWARD_NOTIFY) {
-			  $.ctrTemp = `${process.env.JD_JOY_REWARD_NOTIFY}` === 'false';
-			} else if ($.getdata('jdJoyRewardNotify')) {
-			  $.ctrTemp = $.getdata('jdJoyRewardNotify') === 'false';
+		var today=new Date();
+	    var year=today.getFullYear();
+	    var month=today.getMonth();
+	    var day=today.getDate();
+	    var hour=today.getHours()+1;
+	    if (hour==24){
+		  hour=0;
+		  day=day+1;
+	    }
+		if (hour == 0 || hour == 8 || hour == 16) {
+			console.log(`\n您设置的兑换${giftValue}京豆库存充足,开始为您兑换${giftValue}京豆\n`);
+			await exchange(saleInfoId, 'pet');
+			if ($.exchangeRes && $.exchangeRes.success) {
+			  if ($.exchangeRes.errorCode === 'buy_success') {
+				console.log(`\n兑换${giftValue}成功,【消耗积分】${salePrice}个\n`)
+				if ($.isNode() && process.env.JD_JOY_REWARD_NOTIFY) {
+				  $.ctrTemp = `${process.env.JD_JOY_REWARD_NOTIFY}` === 'false';
+				} else if ($.getdata('jdJoyRewardNotify')) {
+				  $.ctrTemp = $.getdata('jdJoyRewardNotify') === 'false';
+				} else {
+				  $.ctrTemp = `${jdNotify}` === 'false';
+				}
+				if ($.ctrTemp) {
+				  $.msg($.name, ``, `【京东账号${$.index}】${$.nickName}\n【${giftValue}京豆】兑换成功\n【积分详情】消耗积分 ${salePrice}`);
+				}
+			  } else if ($.exchangeRes && $.exchangeRes.errorCode === 'buy_limit') {
+				console.log(`\n兑换${rewardNum}京豆失败，原因：兑换京豆已达上限，请把机会留给更多的小伙伴~\n`)
+			  } else if ($.exchangeRes && $.exchangeRes.errorCode === 'stock_empty'){
+				console.log(`\n兑换${rewardNum}京豆失败，原因：当前京豆库存为空\n`)
+			  } else if ($.exchangeRes && $.exchangeRes.errorCode === 'insufficient'){
+				console.log(`\n兑换${rewardNum}京豆失败，原因：当前账号积分不足兑换${giftValue}京豆所需的${salePrice}积分\n`)
+			  } else {
+				console.log(`\n兑奖失败:${JSON.stringify($.exchangeRes)}`)
+			  }
 			} else {
-			  $.ctrTemp = `${jdNotify}` === 'false';
+			  console.log(`\n兑换京豆异常:${JSON.stringify($.exchangeRes)}`)
 			}
-			if ($.ctrTemp) {
-			  $.msg($.name, ``, `【京东账号${$.index}】${$.nickName}\n【${giftValue}京豆】兑换成功\n【积分详情】消耗积分 ${salePrice}`);
+			} else {
+			  console.log(`\n您设置了不兑换京豆,如需兑换京豆，请去BoxJs处设置或修改joyRewardName代码或设置环境变量 JD_JOY_REWARD_NAME`)
 			}
-		  } else if ($.exchangeRes && $.exchangeRes.errorCode === 'buy_limit') {
-			console.log(`\n兑换${rewardNum}京豆失败，原因：兑换京豆已达上限，请把机会留给更多的小伙伴~\n`)
-		  } else if ($.exchangeRes && $.exchangeRes.errorCode === 'stock_empty'){
-			console.log(`\n兑换${rewardNum}京豆失败，原因：当前京豆库存为空\n`)
-		  } else if ($.exchangeRes && $.exchangeRes.errorCode === 'insufficient'){
-			console.log(`\n兑换${rewardNum}京豆失败，原因：当前账号积分不足兑换${giftValue}京豆所需的${salePrice}积分\n`)
-		  } else {
-			console.log(`\n兑奖失败:${JSON.stringify($.exchangeRes)}`)
-		  }
 		} else {
-		  console.log(`\n兑换京豆异常:${JSON.stringify($.exchangeRes)}`)
-		}
-      } else {
-        console.log(`\n您设置了不兑换京豆,如需兑换京豆，请去BoxJs处设置或修改joyRewardName代码或设置环境变量 JD_JOY_REWARD_NAME`)
-      }
+			console.log(`$当前不是兑换时间`)
+		}		
     } else {
       console.log(`${$.name}getExchangeRewards异常,${JSON.stringify($.getExchangeRewardsRes)}`)
     }
