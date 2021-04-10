@@ -2,7 +2,7 @@
  * @Author: sq
  * @Date: 2021-04-10 19:00:00
  * @Last Modified by: sq
- * @Last Modified time: 2021-04-10 20:03:00
+ * @Last Modified time: 2021-04-10 20:20:00
  */
 
 // prettier-ignore
@@ -106,16 +106,20 @@ async function joyReward() {
 				var month=today.getMonth();
 				var day=today.getDate();
 				var hour=today.getHours()+1;
+				var min=today.getMinutes()+1;
 				if (hour==24){
 				  hour=0;
 				  day=day+1;
 				}
-				hour=0;
-				if (hour == 0 || hour == 8 || hour == 16) {
-					var d=(new Date(year,month,day,hour,0,0)).getTime();
+				if (hour == 0 || hour == 8 || hour == 16 || hour < 24) {
+					var d=(new Date(year,month,day,hour,min,0)).getTime();
 					console.log(`目标时间:${d}`);
 					var jd=await getJDServerTime();
 					console.log(`京东时间:${jd}`);
+					var it=d-jd;
+					console.log(`等待间隔：${it}`);
+					console.log(`当前时间：${Date.now()}`);
+					await sleep(it);
 					await exchange(saleInfoId, 'pet');
 					if ($.exchangeRes && $.exchangeRes.success) {
 						if ($.exchangeRes.errorCode === 'buy_success') {
@@ -152,6 +156,10 @@ async function joyReward() {
 	} catch (e) {
 		$.logErr(e)
 	}
+}
+
+function sleep(it) {
+  return new Promise(resolve => {setTimeout(function(){console.log(`${当前时间：${Date.now()}}`);resolve();},it)});
 }
 
 function getExchangeRewards() {
@@ -199,6 +207,7 @@ function getExchangeRewards() {
 }
 
 function exchange(saleInfoId, orderSource) {
+	console.log(`开始时间：${Date.now()}`);
   let body = {"buyParam":{"orderSource":orderSource,"saleInfoId":saleInfoId},"deviceInfo":{}}
   let opt = {
     "url": "//jdjoy.jd.com/common/gift/new/exchange",
