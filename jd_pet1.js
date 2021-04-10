@@ -2,7 +2,7 @@
  * @Author: sq
  * @Date: 2021-04-10 19:00:00
  * @Last Modified by: sq
- * @Last Modified time: 2021-04-10 20:20:00
+ * @Last Modified time: 2021-04-10 20:21:00
  */
 
 // prettier-ignore
@@ -159,7 +159,7 @@ async function joyReward() {
 }
 
 function sleep(it) {
-  return new Promise(resolve => {setTimeout(function(){console.log(`${当前时间：${Date.now()}}`);resolve();},it)});
+  return new Promise(resolve => {setTimeout(function(){console.log(`当前时间：${Date.now()}`);resolve();},it)});
 }
 
 function getExchangeRewards() {
