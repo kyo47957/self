@@ -2,7 +2,7 @@
  * @Author: sq
  * @Date: 2021-04-10 19:00:00
  * @Last Modified by: sq
- * @Last Modified time: 2021-04-10 21:50:00
+ * @Last Modified time: 2021-04-11 11:25:00
  */
 
 // prettier-ignore
@@ -110,6 +110,8 @@ async function joyReward() {
 					if (hour==23){
 					  hour=0;
 					  day=day+1;
+					} else {
+						hour=hour+1;
 					}
 					var d=(new Date(year,month,day,hour,0,0)).getTime();
 					console.log(`目标时间:${d}`);
