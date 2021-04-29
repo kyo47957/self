@@ -1,4 +1,4 @@
-//0429
+//042901
 const $ = new Env('千禾阅读自动阅读');
 let status;
 status = (status = ($.getval("qhydstatus") || "1") ) > 1 ? `${status}` : ""; // 账号扩展字符
@@ -207,7 +207,7 @@ let url = {
 }
    
         } catch (e) {
-          //$.logErr(e, resp);
+          $.logErr(e, resp);
         } finally {
           resolve()
         }
