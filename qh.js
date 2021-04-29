@@ -1,3 +1,4 @@
+//0429
 const $ = new Env('千禾阅读自动阅读');
 let status;
 status = (status = ($.getval("qhydstatus") || "1") ) > 1 ? `${status}` : ""; // 账号扩展字符
@@ -120,7 +121,7 @@ key = key.urlKey
 time = parseInt((new Date).getTime() / 1e3)
 sign = md5(`<span>span.qianhe</span>${time}<span>span.qianhe</span>`)
 let url = {
-        url : `https://www.mohe9.com/read/v1/get_time_list_task`,
+        url : `https://www.qianhe9.com/read/v1/get_time_list_task`,
         headers : JSON.parse(qhydhd),
         body : `{"urlKey":"${key}","time_id":${tid},"time":${time},"sign":"${sign}"}`,
 }
@@ -175,7 +176,7 @@ uid = t.str_id
 t = uid[8] + "" + uid[10] + uid[5]
 let o = Math.random().toString(36).substr(2)
 let url = {
-        url : 'https://www.mohe9.com/read/v1/get_click_task',
+        url : 'https://www.qianhe9.com/read/v1/get_click_task',
         headers : JSON.parse(qhydhd),
         body : `{"urlKey":"${key}","task_id":${id},"type":1,"str_id":"${uid}","time":${time},"sign":"${sign}"}`,
 }
@@ -223,7 +224,7 @@ key = key.urlKey
 time = parseInt((new Date).getTime() / 1e3)
 sign = md5(`<span>span.qianhe</span>${time}<span>span.qianhe</span>`)
 let url = {
-        url : `https://www.mohe9.com/read/v1/get_click_task`,
+        url : `https://www.qianhe9.com/read/v1/get_click_task`,
         headers : JSON.parse(qhydhd),
         body : `{"urlKey":"${key}","task_id":${id},"time":${times},"type":2,"str_id":"${strid}","time":${time},"sign":"${sign}"}`,
 }
