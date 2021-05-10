@@ -27,7 +27,7 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
     	hour = hour + 1;
     }
     //let d = (new Date(year,month,day,hour,0,0)).getTime();
-    let d = (new Date(year,month,day,hour - 1,today.getMinutes(),today.getSeconds())).getTime();
+    let d = (new Date(year,month,day,hour - 1,today.getMinutes(),today.getSeconds() + 5)).getTime();
     // console.log(`目标时间:${d}`);
     // let d1 = (new Date()).getTime();
     // console.log(`校时开始:${d1}`);
