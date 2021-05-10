@@ -1,6 +1,6 @@
 /*
  * @Author: sq
- * @Date: 2021-05-10 002
+ * @Date: 2021-05-10 003
  * @Last Modified by: sq
  * @Last Modified time: 2021-04-11 11:25:00
  */
@@ -16,16 +16,16 @@
 
 const $ = new Env('宠汪汪积分兑换奖品');
 const notify = ''; 
-let cookie = $.getdata('CookieJD');
-console.log(cookie);
+//let cookie = $.getdata('CookieJD');
+//console.log(cookie);
 const JD_API_HOST = 'https://jdjoy.jd.com';
 !(async () => {
-	$.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
-	console.log(`\n*****开始 ${$.UserName}****\n`);	
+	//$.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
+	//console.log(`\n*****开始 ${$.UserName}****\n`);	
   }
 })()
 .catch((e) => {
-  $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+  //$.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
 })
 .finally(() => {
   $.done();
