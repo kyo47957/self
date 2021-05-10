@@ -24,29 +24,54 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
 
 async function joyReward() {
   try {     
-	await exchange(339, 'pet');
-	if ($.exchangeRes && $.exchangeRes.success) {
-	  if ($.exchangeRes.errorCode === 'buy_success') {	
-		console.log(`\n兑换成功\n`)
-		
-	  } else if ($.exchangeRes && $.exchangeRes.errorCode === 'buy_limit') {
-		console.log(`\n兑换京豆失败，原因：兑换京豆已达上限，请把机会留给更多的小伙伴~\n`)
-		
-	  } else if ($.exchangeRes && $.exchangeRes.errorCode === 'stock_empty'){
-		console.log(`\n兑换京豆失败，原因：当前京豆库存为空\n`)
-	  } else if ($.exchangeRes && $.exchangeRes.errorCode === 'insufficient'){
-		console.log(`\n兑换京豆失败，原因：当前账号积分不足\n`)
-	  } else {
-		console.log(`\n兑奖失败:${JSON.stringify($.exchangeRes)}`)
-	  }
-	} else {
-	  console.log(`\n兑换京豆异常:${JSON.stringify($.exchangeRes)}`)
-	}
+	await getExchangeRewards();
   } catch (e) {
     $.logErr(e)
   }
 }
-
+function getExchangeRewards() {
+  let opt = {
+    url: "//jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5",
+    method: "GET",
+    data: {},
+    credentials: "include",
+    header: {"content-type": "application/json"}
+  }
+  return new Promise((resolve) => {
+    const option = {
+      url: "https:"+ taroRequest(opt)['url'],
+      headers: {
+        "Host": "jdjoy.jd.com",
+        "Content-Type": "application/json",
+        "Cookie": cookie,
+        "reqSource": "h5",
+        "Connection": "keep-alive",
+        "Accept": "*/*",
+        "User-Agent": $.getdata('JDUA'),
+        "Referer": "https://jdjoy.jd.com/pet/index",
+        "Accept-Language": "zh-cn",
+        "Accept-Encoding": "gzip, deflate, br"
+      },
+    }
+    $.get(option, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          $.getExchangeRewardsRes = {};
+          if (safeGet(data)) {
+            $.getExchangeRewardsRes = JSON.parse(data);
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    });
+  })
+}
 function exchange(saleInfoId, orderSource) {
   let body = {"buyParam":{"orderSource":orderSource,"saleInfoId":saleInfoId},"deviceInfo":{}}
   let opt = {
