@@ -37,8 +37,8 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
     // console.log(`校时结束:${d2}`);
     // let ii = (d2 - d1) / 2;
     // let iii = jd - d1 - ii;
-    // let cr = 1;
-    // while (cr == 1) {
+    let cr = 1;
+    while (cr == 1) {
       await exchange();
       if ($.exchangeRes && $.exchangeRes.success) {
         switch($.exchangeRes.errorCode) {
@@ -60,13 +60,12 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
         }
         let jdTime = $.exchangeRes.currentTime;
         console.log(`\n兑换京豆异常:${jdTime}`);
-        // if (jdTime > d)
-        //   cr = 0;
+        if (jdTime > d) {cr = 0;}			
       } else {
-        // cr = 0;
+        cr = 0;
         console.log(`\n兑换京豆异常:${JSON.stringify($.exchangeRes)}`);
       }
-    // }					
+    }					
   } else {
     console.log(`当前不是兑换时间`);			  
   }			
