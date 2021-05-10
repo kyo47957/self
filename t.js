@@ -1,6 +1,6 @@
 /*
  * @Author: sq
- * @Date: 2021-05-10 19:00:00
+ * @Date: 2021-05-10 001
  * @Last Modified by: sq
  * @Last Modified time: 2021-04-11 11:25:00
  */
@@ -18,8 +18,8 @@ const $ = new Env('宠汪汪积分兑换奖品');
 let allMessage = '';
 const notify = '';
 let jdNotify = false;
-let cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item); 
-let cookie = cookiesArr[0];
+//let cookiesArr = [, $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item); 
+let cookie = $.getdata('CookieJD');
 const JD_API_HOST = 'https://jdjoy.jd.com';
 !(async () => {
 	$.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
@@ -56,12 +56,12 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
 	}
   }
 })()
-    .catch((e) => {
-      $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
-    })
-    .finally(() => {
-      $.done();
-    })
+.catch((e) => {
+  $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+})
+.finally(() => {
+  $.done();
+})
 
 function sleep(it) {
   return new Promise(resolve => {setTimeout(function(){console.log(`当前时间：${Date.now()}`);resolve();},it-20)});
