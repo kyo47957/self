@@ -14,36 +14,32 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
 
 !(async () => {
   console.log(`\n*****开始【京东账号】kyo47957 ****\n`);
-  try {
-    var today = new Date();
-    var year = today.getFullYear();
-    var month = today.getMonth();
-    var day = today.getDate();
-    var hour = today.getHours();
-    if (hour == 23 || hour == 7 || hour == 15 || hour > 0) {
-      //if (hour == 23){
-      //  hour = 0;
-      //  day = day + 1;
-      //} else {
-      //	hour = hour + 1;
-      //}
-      //var d = (new Date(year,month,day,hour,0,0)).getTime();
-      var d = (new Date(year,month,day,hour,today.getMinutes(),getSeconds() + 1)).getTime();
-      console.log(`目标时间:${d}`);
-      var jd = await getJDServerTime();
-      console.log(`京东时间:${jd}`);			
-      if(d > jd) {
-        await sleep(d - jd);				
-      }
-      else {
-        console.log(`当前不是兑换时间`);			  
-      }			
-    } else {
+  let today = new Date();
+  let year = today.getFullYear();
+  let month = today.getMonth();
+  let day = today.getDate();
+  let hour = today.getHours();
+  if (hour == 23 || hour == 7 || hour == 15 || hour > 0) {
+    //if (hour == 23){
+    //  hour = 0;
+    //  day = day + 1;
+    //} else {
+    //	hour = hour + 1;
+    //}
+    //var d = (new Date(year,month,day,hour,0,0)).getTime();
+    let d = (new Date(year,month,day,hour,today.getMinutes(),getSeconds() + 1)).getTime();
+    console.log(`目标时间:${d}`);
+    let jd = await getJDServerTime();
+    console.log(`京东时间:${jd}`);			
+    if(d > jd) {
+      await sleep(d - jd);				
+    }
+    else {
       console.log(`当前不是兑换时间`);			  
     }			
-  } catch (e) {
-    $.logErr(e)
-  }
+  } else {
+    console.log(`当前不是兑换时间`);			  
+  }			
   //}
   //if ($.isNode() && allMessage && $.ctrTemp) {
   //  await notify.sendNotify(`${$.name}`, `${allMessage}`)
