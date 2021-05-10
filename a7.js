@@ -29,7 +29,7 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
 
 async function joyReward() {
   try {
-	await exchange(339, 'pet');
+	await exchange();
 	if ($.exchangeRes && $.exchangeRes.success) {
 	  switch($.exchangeRes.errorCode) {
             case 'buy_success':
@@ -55,51 +55,8 @@ async function joyReward() {
     $.logErr(e)
   }
 }
-function getExchangeRewards() {
-  let opt = {
-    url: "//jdjoy.jd.com/common/gift/getBeanConfigs?reqSource=h5",
-    method: "GET",
-    data: {},
-    credentials: "include",
-    header: {"content-type": "application/json"}
-  }
-  return new Promise((resolve) => {
-    const option = {
-      url: "https:"+ taroRequest(opt)['url'],
-      headers: {
-        "Host": "jdjoy.jd.com",
-        "Content-Type": "application/json",
-        "Cookie": cookie,
-        "reqSource": "h5",
-        "Connection": "keep-alive",
-        "Accept": "*/*",
-        "User-Agent": ua,
-        "Referer": "https://jdjoy.jd.com/pet/index",
-        "Accept-Language": "zh-cn",
-        "Accept-Encoding": "gzip, deflate, br"
-      },
-    }
-    $.get(option, (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          $.getExchangeRewardsRes = {};
-          if (safeGet(data)) {
-            $.getExchangeRewardsRes = JSON.parse(data);
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve();
-      }
-    });
-  })
-}
-function exchange(saleInfoId, orderSource) {
-  let body = {"buyParam":{"orderSource":orderSource,"saleInfoId":saleInfoId},"deviceInfo":{}}
+function exchange() {
+  let body = {"buyParam":{"orderSource":'pet',"saleInfoId":339},"deviceInfo":{}}
   let opt = {
     "url": "//jdjoy.jd.com/common/gift/new/exchange",
     "data":body,
