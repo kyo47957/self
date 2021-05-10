@@ -122,9 +122,7 @@ async function joyReward() {
           if (leftStock) {
             if (!saleInfoId) return
             console.log(`\n您设置的兑换${giftValue}京豆库存充足,开始为您兑换${giftValue}京豆\n`);
-            console.log(`脚本开始兑换${rewardNum}京豆时间 ${(new Date()).Format("yyyy-MM-dd hh:mm:ss | S")}`);
             await exchange(saleInfoId, 'pet');
-            console.log(`请求兑换API后时间 ${(new Date()).Format("yyyy-MM-dd hh:mm:ss | S")}`);
             if ($.exchangeRes && $.exchangeRes.success) {
               if ($.exchangeRes.errorCode === 'buy_success') {
                 // console.log(`兑换${giftValue}成功,【宠物等级】${data.level}\n【消耗积分】${salePrice}个\n【剩余积分】${data.coin - salePrice}个\n`)
