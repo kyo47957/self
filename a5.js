@@ -29,7 +29,7 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
       $.index = i + 1;
       $.isLogin = true;
       $.nickName = '' || $.UserName;
-      //await TotalBean();
+      await TotalBean();
       console.log(`\n*****开始【京东账号${$.index}】${$.nickName || $.UserName}****\n`);
       await joyReward();
     }
