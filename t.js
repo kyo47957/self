@@ -32,15 +32,7 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
   }
 	//let d = (new Date(year,month,day,hour,0,0)).getTime();
 	let d = (new Date(year,month,day,hour - 1,today.getMinutes(),today.getSeconds())).getTime();
-	// console.log(`目标时间:${d}`);
-	// let d1 = (new Date()).getTime();
-	// console.log(`校时开始:${d1}`);
-	// let jd = await getJDServerTime();
-	// console.log(`京东时间:${jd}`);	
-	// let d2 = (new Date()).getTime();
-	// console.log(`校时结束:${d2}`);
-	// let ii = (d2 - d1) / 2;
-	// let iii = jd - d1 - ii;
+	console.log(`目标时间:${d}`);
 	var ccc = 1;
 	//while (cr == 1) {
 	  await exchange();
