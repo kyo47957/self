@@ -16,30 +16,56 @@ const JD_API_HOST = 'https://jdjoy.jd.com';
 
 !(async () => {
 	await TotalBean();
-	console.log(`\n*****开始【京东账号】${$.nickName || $.UserName}****\n`)
-	await exchange();
-	if ($.exchangeRes && $.exchangeRes.success) {
-		console.log(`\n${$.exchangeRes.currentTime}\n`);
-	  switch($.exchangeRes.errorCode) {
-			case 'buy_success':
-			  console.log(`\n兑换成功\n`);
-			  break;
-			case 'buy_limit':
-			  console.log(`\n兑换失败，原因：兑换京豆已达上限\n`);
-			  break;
-			case 'stock_empty':
-			  console.log(`\n兑换失败，原因：当前京豆库存为空\n`);
-			  break;
-			case 'insufficient':
-			  console.log(`\n兑换失败，原因：当前账号积分不足\n`);
-			  break;
-			default:
-			  console.log(`\n兑奖失败:${JSON.stringify($.exchangeRes)}`);
-			  break;
-		}
-	} else {
-	  console.log(`\n兑换京豆异常:${JSON.stringify($.exchangeRes)}`)
+	console.log(`\n*****开始【京东账号】${$.nickName || $.UserName}****\n`);
+	let today = new Date();
+	let year = today.getFullYear();
+	let month = today.getMonth();
+	let day = today.getDate();
+	let hour = today.getHours();
+	switch (hour) {
+	case 7:
+	case 15:
+		hour = hour + 1;
+		break;
+	case 23:
+		hour = 0;
+		day = day + 1;
+		break;
+	default:
+		break;	
 	}
+	//let d = (new Date(year,month,day,hour,0,0)).getTime();
+	let d = (new Date(year,month,day,hour - 1,today.getMinutes(),today.getSeconds())).getTime();
+	console.log(`目标时间:${d}`);
+	let ccc = true;
+	while (ccc) {
+		await exchange();
+		if ($.exchangeRes && $.exchangeRes.success) {
+			console.log(`\n${$.exchangeRes.currentTime}\n`);
+			switch($.exchangeRes.errorCode) {
+				case 'buy_success':
+				  console.log(`\n兑换成功\n`);
+				  break;
+				case 'buy_limit':
+				  console.log(`\n兑换失败，原因：兑换京豆已达上限\n`);
+				  break;
+				case 'stock_empty':
+				  console.log(`\n兑换失败，原因：当前京豆库存为空\n`);
+				  break;
+				case 'insufficient':
+				  console.log(`\n兑换失败，原因：当前账号积分不足\n`);
+				  break;
+				default:
+				  console.log(`\n兑奖失败:${JSON.stringify($.exchangeRes)}`);
+				  break;
+			}
+			if ($.exchangeRes.currentTime > d)
+				ccc = false;
+		} else {
+		  ccc = false;
+		  console.log(`\n兑换京豆异常:${JSON.stringify($.exchangeRes)}`)
+		}
+	}	
 })()
     .catch((e) => {
       $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
