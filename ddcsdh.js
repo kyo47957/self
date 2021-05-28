@@ -175,7 +175,7 @@ async function PrizeIndex() {
     //     $.beanerr = `奖品兑换列表[${coinToBeans}]已下架`;
     //   }
     // }
-  }
+  // }
 }
 //查询白酒类奖品列表API
 function smtg_materialPrizeIndex(timeout = 0) {
