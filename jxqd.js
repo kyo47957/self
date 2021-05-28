@@ -2,7 +2,6 @@ const $ = new Env('京喜签到');
 const notify = '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.json') : '';
-// const ua = 'jdpingou;android;4.9.0;10;b5ba2d1707e969c6;network/wifi;model/OCE-AN10;appBuild/16879;partner/huawei01;;session/105;aid/b5ba2d1707e969c6;oaid/a126d000-439d-450f-9b50-b2d255e3a4e4;pap/JA2019_3111789;brand/HUAWEI;eu/2653261623461373;fv/0373569363933663;Mozilla/5.0 (Linux; Android 10; OCE-AN10 Build/HUAWEIOCE-AN10; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.106 Mobile Safari/537.36';
 let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
