@@ -6,6 +6,7 @@ let shop2 = ['FBFN48','CX522V','TXU6GB','5RFCD9','YTDXNL','E55F2M','M79U5N','YCD
 var shareCodeList = ['78xTb-mdO2_5fV_mOYWHhlCulDoInfIOFMCoXKe_FCtvxHdgilgt5BtvxYkO_ihAqYxqzItRfOSKkTe3QXanOJKngp6atwCeD_xgO9g',''];
 var shopIdList = ['637BQA','XLDYRJ','94FEDQ','GN949D'];
 var starList = ['MW9U5Z'];
+var shopFlag = true;
 const JD_API_HOST = `https://api.m.jd.com/client.action?functionId=`;
 const JD_API_HOST1 = `https://api.m.jd.com/functionId=`;
 !(async () => {
@@ -63,8 +64,10 @@ const JD_API_HOST1 = `https://api.m.jd.com/functionId=`;
         await mcxhd_starmall_taskList(shopId);
       }
       for (let shop of shop2) {
-        console.log('\n开始小店：' + shopId)
-        await getAllTask(shop);
+        console.log('\n开始小店：' + shop)
+        while (shopFlag) {
+          await getAllTask(shop);
+        }
       }
       //break;
       await msgShow();
@@ -335,7 +338,7 @@ function getAllTask(uId, timeout = 0){
             else
               console.log('\n任务：' + dd.taskShowTitle + '已完成');
           }
-          scanFlag = false;
+          shopFlag = false;
         } catch (e) {
           $.logErr(e, resp);
         } finally {
