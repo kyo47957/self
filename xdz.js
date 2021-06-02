@@ -1,14 +1,13 @@
 const $ = new Env('京东星店长');
 //Node.js用户请在jdCookie.js处填写京东ck;
-//IOS等用户直接用NobyDa的jd cookie11
+//IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '',shareCode = "";
-let shop2 = ['FBFN48','CX522V','TXU6GB','5RFCD9','YTDXNL','E55F2M','M79U5N','YCDXNN','8K7JM3','762GUB','TRU6GG','877JM4','AVDKNT','MW9U5Z','ET5F23','LW4LCK'];
+//'FBFN48','CX522V','TXU6GB','5RFCD9','YTDXNL','E55F2M','M79U5N','YCDXNN','8K7JM3','762GUB','TRU6GG','877JM4','AVDKNT','MW9U5Z','ET5F23','LW4LCK'
+let shop2 = ['FBFN48','CX522V','TXU6GB','5RFCD9','YTDXNL','E55F2M','M79U5N','YCDXNN','8K7JM3','762GUB','TRU6GG','877JM4','AVDKNT','MW9U5Z','ET5F23','LW4LCK','ET5F23'];
 var shareCodeList = ['78xTb-mdO2_5fV_mOYWHhlCulDoInfIOFMCoXKe_FCtvxHdgilgt5BtvxYkO_ihAqYxqzItRfOSKkTe3QXanOJKngp6atwCeD_xgO9g',''];
 var shopIdList = ['637BQA','XLDYRJ','94FEDQ','GN949D'];
 var starList = ['MW9U5Z'];
-var shopFlag = true;
 const JD_API_HOST = `https://api.m.jd.com/client.action?functionId=`;
-const JD_API_HOST1 = `https://api.m.jd.com/functionId=`;
 !(async () => {
   await requireConfig()
   if (!cookiesArr[0]) {
@@ -65,9 +64,7 @@ const JD_API_HOST1 = `https://api.m.jd.com/functionId=`;
       }
       for (let shop of shop2) {
         console.log('\n开始小店：' + shop)
-        while (shopFlag) {
-          await getAllTask(shop);
-        }
+        await getAllTask(shop);
       }
       //break;
       await msgShow();
@@ -332,13 +329,17 @@ function getAllTask(uId, timeout = 0){
           {
             if (!dd.taskFinished)
             {
-              console.log('\n开始做任务：' + dd.taskShowTitle);
-              getTask(uId,dd.id,dd.taskType);
+              if (dd.taskShowTitle==='邀请好友')
+                continue;
+              console.log('开始做任务：' + dd.taskShowTitle);
+              if (dd.taskType==='SIGN')
+                await doSign(uId,dd.id);
+              else
+                await getTask(uId,dd.id,dd.taskType);
             }
             else
-              console.log('\n任务：' + dd.taskShowTitle + '已完成');
+              console.log('任务：' + dd.taskShowTitle + '已完成');
           }
-          shopFlag = false;
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -377,10 +378,8 @@ function getTask(uId,id,type,timeout = 0){
           data = JSON.parse(data);
           if (data.errMsg !== null)
             console.log(data.errMsg);
-          if (data.success)
-          {          
-            doTask(uId,id,type,data.data.taskItemList[0].itemId);
-          }           
+          if (data.success)     
+            await doTask(uId,id,type,data.data.taskItemList[0].itemId);        
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -420,8 +419,51 @@ function doTask(uId,id,type,itemId,timeout = 0){
           data = JSON.parse(data);
           if (data.errMsg !== null)
             console.log(data.errMsg)
-          if (data.success)            
-            console.log('\n任务完成');
+          if (data.success || data.errMsg==='查找素材库没有资源')      
+          {
+            console.log('任务完成');
+            if (!data.data.finished)
+              await getAllTask(uId);
+          }       
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve()
+        }
+      })
+    },timeout)
+  })
+}
+
+function doSign(uId,id,timeout = 0){
+  var now=(new Date()).getTime();
+  return new Promise((resolve) => {
+    setTimeout( ()=>{
+      let body = {
+        "taskType":"SIGN",
+        "taskId":id,
+        "uniqueId":uId,
+        "linkId":"Y2aqxng42hZ0eGxGtbCMiQ",
+      }
+      let url = {
+        url : `${JD_API_HOST}apDoTask&body=${escape(JSON.stringify(body))}&_t=${now}&appid=activities_platform`,
+        headers : {
+          'Origin' : `https://prodev.m.jd.com`,
+          'Cookie' : cookie,
+          'Connection' : `keep-alive`,
+          'Accept' : `*/*`,
+          'Host' : `api.m.jd.com`,
+          'Accept-Encoding' : `gzip, deflate, br`,
+          'Accept-Language' : `zh-cn`
+        }
+      }
+      $.post(url, async (err, resp, data) => {
+        try {
+          data = JSON.parse(data);
+          if (data.errMsg !== null)
+            console.log(data.errMsg)
+          if (data.success)      
+            console.log('签到完成');    
         } catch (e) {
           $.logErr(e, resp);
         } finally {
