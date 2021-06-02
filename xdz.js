@@ -1,6 +1,6 @@
 const $ = new Env('京东星店长');
 //Node.js用户请在jdCookie.js处填写京东ck;
-//IOS等用户直接用NobyDa的jd cookie
+//IOS等用户直接用NobyDa的jd cookie11
 let cookiesArr = [], cookie = '',shareCode = "";
 let shop2 = ['FBFN48','CX522V','TXU6GB','5RFCD9','YTDXNL','E55F2M','M79U5N','YCDXNN','8K7JM3','762GUB','TRU6GG','877JM4','AVDKNT','MW9U5Z','ET5F23','LW4LCK'];
 var shareCodeList = ['78xTb-mdO2_5fV_mOYWHhlCulDoInfIOFMCoXKe_FCtvxHdgilgt5BtvxYkO_ihAqYxqzItRfOSKkTe3QXanOJKngp6atwCeD_xgO9g',''];
@@ -246,7 +246,7 @@ function mcxhd_starmall_getRedPacketAward(shopId,timeout = 0){
 function requireConfig() {
   return new Promise(resolve => {
     //Node.js用户请在jdCookie.js处填写京东ck;
-    const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+    const jdCookieNode = $.isNode() ? require('./jdCookie.json') : '';
     //IOS等用户直接用NobyDa的jd cookie
     if ($.isNode()) {
       Object.keys(jdCookieNode).forEach((item) => {
@@ -312,7 +312,7 @@ function getAllTask(uId, timeout = 0){
         "linkId":"Y2aqxng42hZ0eGxGtbCMiQ",
       }
       let url = {      
-        url : `${JD_API_HOST1}apTaskList&body=${escape(JSON.stringify(body))}&_t=${now}&appid=activities_platform`,
+        url : `${JD_API_HOST}apTaskList&body=${escape(JSON.stringify(body))}&_t=${now}&appid=activities_platform`,
         headers : {
           'Origin' : `https://prodev.m.jd.com`,
           'Cookie' : cookie,
@@ -361,7 +361,7 @@ function getTask(uId,id,type,timeout = 0){
         "linkId":"Y2aqxng42hZ0eGxGtbCMiQ",
       }
       let url = {
-        url : `${JD_API_HOST1}apTaskDetail&body=${escape(JSON.stringify(body))}&_t=${now}&appid=activities_platform`,
+        url : `${JD_API_HOST}apTaskDetail&body=${escape(JSON.stringify(body))}&_t=${now}&appid=activities_platform`,
         headers : {
           'Origin' : `https://prodev.m.jd.com`,
           'Cookie' : cookie,
@@ -404,7 +404,7 @@ function doTask(uId,id,type,itemId,timeout = 0){
         "itemId":itemId
       }
       let url = {
-        url : `${JD_API_HOST1}apDoTask&body=${escape(JSON.stringify(body))}&_t=${now}&appid=activities_platform`,
+        url : `${JD_API_HOST}apDoTask&body=${escape(JSON.stringify(body))}&_t=${now}&appid=activities_platform`,
         headers : {
           'Origin' : `https://prodev.m.jd.com`,
           'Cookie' : cookie,
