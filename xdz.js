@@ -133,8 +133,10 @@ function mcxhd_starmall_taskList(shopId,timeout = 0){
              console.log('\n开始做任务：' + data.result.tasks[i].taskName)
             if (data.result.tasks[i].status === 1 ) {
               for (let j in data.result.tasks[i].subItem) {
+				if (data.result.tasks[i].taskType === "6")
+					continue;
                 await mcxhd_starmall_doTask(shopId,data.result.tasks[i].taskType,data.result.tasks[i].subItem[j].itemToken)
-                if (data.result.tasks[i].taskType === "6" && !shareCode) shareCode = data.result.tasks[i].subItem[j].itemToken;
+                //if (data.result.tasks[i].taskType === "6" && !shareCode) shareCode = data.result.tasks[i].subItem[j].itemToken;
               }
             } else {
               //console.log(data.result.tasks[i].taskType)
@@ -169,7 +171,7 @@ function mcxhd_starmall_doTask(shopId,taskType,itemToken,timeout = 0){
           'Cookie' : cookie,
           'Connection' : `keep-alive`,
           'Accept' : `*/*`,
-          'Referer' : `https://h5.m.jd.com/babelDiy/Zeus/4DEZi5iUgrNLD9EWknrGZhCjNv7V/index.html?shopId=${shopId}&inviteId=${shareCode[shopId]}&babelChannel=ttt1`,
+          'Referer' : `https://h5.m.jd.com/babelDiy/Zeus/4DEZi5iUgrNLD9EWknrGZhCjNv7V/index.html?shopId=${shopId}&babelChannel=ttt1`,
           'Host' : `api.m.jd.com`,
           'Accept-Encoding' : `gzip, deflate, br`,
           'Accept-Language' : `zh-cn`
