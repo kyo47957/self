@@ -1,7 +1,7 @@
 const $ = new Env('京东星店长');
-//新增刘诗诗，林志玲，张柏芝，黄奕
+//新增lxk里的星店长
 let cookiesArr = [], cookie = '',shareCode = "";
-let shop2 = ['FBFN48','CX522V','TXU6GB','5RFCD9','YTDXNL','E55F2M','M79U5N','YCDXNN','8K7JM3','762GUB','TRU6GG','877JM4','AVDKNT','MW9U5Z','ET5F23','LW4LCK','ET5F23','WG73ME','637BQA','XLDYRJ','94FEDQ','GN949D','D22Q7C','5JFCD6','ZH7TQ6','ND55FR','P94VEU','4A2M7K','QE9757'];
+let shop2 = ['FBFN48','CX522V','TXU6GB','5RFCD9','YTDXNL','E55F2M','M79U5N','YCDXNN','8K7JM3','762GUB','TRU6GG','877JM4','AVDKNT','MW9U5Z','ET5F23','LW4LCK','WG73ME','637BQA','XLDYRJ','94FEDQ','GN949D','D22Q7C','5JFCD6','ZH7TQ6','ND55FR','P94VEU','4A2M7K','QE9757','K6DARX','S99D9G','UK2SUY','VS4PEM','2PFR4L','J8UWSP','3FU8S5','3PU8SZ','ZQ7TQR','VZ4PEY','4C2M75'];
 var shareCodeList = ['78xTb-mdO2_5fV_mOYWHhlCulDoInfIOFMCoXKe_FCtvxHdgilgt5BtvxYkO_ihAqYxqzItRfOSKkTe3QXanOJKngp6atwCeD_xgO9g',''];
 var shopIdList = ['637BQA','XLDYRJ','94FEDQ','GN949D'];
 var starList = ['MW9U5Z'];
@@ -311,7 +311,7 @@ function getAllTask(uId, timeout = 0){
                 let scanC = 0;
                 while (scan) {
                   await doScan(uId,dd.id);
-                  $.wait(500);
+                  $.wait(1000);
                   scanC++;
                   if (scanC >= 5)
                     scan = false;
@@ -322,10 +322,10 @@ function getAllTask(uId, timeout = 0){
             }
             else
               console.log('任务：' + dd.taskShowTitle + '已完成');
-            $.wait(500);
-            await doDraw(uId);
-            $.wait(500);
           }
+          $.wait(1000);
+          await doDraw(uId);
+          $.wait(1000);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -442,6 +442,7 @@ function doScan(uId,id,timeout = 0){
                   })
                 },timeout)
               })
+              $.wait(1000);
             }              
           }  
           else
