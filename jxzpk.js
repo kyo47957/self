@@ -85,7 +85,7 @@ function GetlkEPin() {
           if (data.success) {  
             while (canPk) {
               await Query(data.data);
-              $.wait(1000);
+              await $.wait(1000);
             }                           
           }         
         } catch (e) {
@@ -121,7 +121,7 @@ function Query(lkEPin) {
               canPk = false;
             else 
               await GetFriends(data.data.actId,lkEPin);
-            $.wait(1000);              
+            await $.wait(1000);              
           }         
         } catch (e) {
           $.logErr(e, resp);
@@ -153,12 +153,12 @@ function GetFriends(actId,lkEPin) {
             for (let datas of data.datas) {
               if (datas.pkStatus === 2) {
                 console.log(`开始与  ${datas.jdNickname}  进行PK`);
-                $.wait(1000);
+                await $.wait(1000);
                 await doPK(actId,datas.jdNickname,datas.friendPin,datas.relation,lkEPin);          
               }
               else
                 console.log(`已与  ${datas.jdNickname}  的PK过`);
-              $.wait(1000);
+              await $.wait(1000);
             }              
           }         
         } catch (e) {
@@ -195,7 +195,7 @@ function doPK(actId,name,recipient,relation,lkEPin){
         resolve()
       }
     });
-    $.wait(2000);
+    await $.wait(2000);
   })
 }
 
