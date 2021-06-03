@@ -1,5 +1,5 @@
 const $ = new Env('京东星店长');
-//新增李一桐
+//新增星小店抽奖功能
 let cookiesArr = [], cookie = '',shareCode = "";
 let shop2 = ['FBFN48','CX522V','TXU6GB','5RFCD9','YTDXNL','E55F2M','M79U5N','YCDXNN','8K7JM3','762GUB','TRU6GG','877JM4','AVDKNT','MW9U5Z','ET5F23','LW4LCK','ET5F23','WG73ME','637BQA','XLDYRJ','94FEDQ','GN949D','D22Q7C','5JFCD6','ZH7TQ6'];
 var shareCodeList = ['78xTb-mdO2_5fV_mOYWHhlCulDoInfIOFMCoXKe_FCtvxHdgilgt5BtvxYkO_ihAqYxqzItRfOSKkTe3QXanOJKngp6atwCeD_xgO9g',''];
@@ -322,6 +322,9 @@ function getAllTask(uId, timeout = 0){
             }
             else
               console.log('任务：' + dd.taskShowTitle + '已完成');
+            $.wait(500);
+            await doDraw(uId);
+            $.wait(500);
           }
         } catch (e) {
           $.logErr(e, resp);
@@ -517,6 +520,83 @@ function doFollow(uId,id,itemId,timeout = 0) {
                 })
               },timeout)
             })
+          }      
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve()
+        }
+      })
+    },timeout)
+  }) 
+}
+
+function doDraw(uId,timeout = 0) {
+  var now=(new Date()).getTime();
+  return new Promise((resolve) => {
+    setTimeout( ()=>{
+      let body = {
+        "starId":uId,
+        "linkId":"Y2aqxng42hZ0eGxGtbCMiQ",
+      }
+      let url = {
+        url : `${JD_API_HOST}activityStarBackGetProgressBarInfo&body=${escape(JSON.stringify(body))}&_t=${now}&appid=activities_platform`,
+        headers : {
+          'Origin' : `https://prodev.m.jd.com`,
+          'Cookie' : cookie,
+          'Connection' : `keep-alive`,
+          'Accept' : `*/*`,
+          'Host' : `api.m.jd.com`,
+          'Accept-Encoding' : `gzip, deflate, br`,
+          'Accept-Language' : `zh-cn`
+        }
+      }
+      $.post(url, async (err, resp, data) => {
+        try {
+          data = JSON.parse(data);
+          if (data.success)   
+          {                  
+            for (let dataPrize of JSON.stringify(data.data.prize).replace('{\"1\":','').replace(',\"2\":','|||').replace(',\"3\":','|||').replace(',\"4\":','|||').replace('}}','}').split('|||')) {
+              let dd = JSON.parse(dataPrize);
+              if (dd.state === 1) {
+                console.log(`开始抽奖：${dd.name}`);
+                now=(new Date()).getTime();
+                new Promise((resolve) => {
+                  setTimeout( ()=>{
+                    body = {
+  
+                      "starId":uId,
+                      "poolId":dd.id,
+                      "pos":dd.pos,                     
+                      "linkId":"Y2aqxng42hZ0eGxGtbCMiQ"            
+                    }
+                    url = {
+                      url : `${JD_API_HOST}activityStarBackDrawPrize&body=${escape(JSON.stringify(body))}&_t=${now}&appid=activities_platform`,
+                      headers : {
+                        'Origin' : `https://prodev.m.jd.com`,
+                        'Cookie' : cookie,
+                        'Connection' : `keep-alive`,
+                        'Accept' : `*/*`,
+                        'Host' : `api.m.jd.com`,
+                        'Accept-Encoding' : `gzip, deflate, br`,
+                        'Accept-Language' : `zh-cn`
+                      }
+                    }
+                    $.post(url, async (err, resp, data) => {
+                      try {
+                        data = JSON.parse(data);
+                        if (data.success)      
+                          console.log(`抽奖成功，获得${data.data.prizeDesc}`);     
+                      } catch (e) {
+                        $.logErr(e, resp);
+                      } finally {
+                        resolve()
+                      }
+                    })
+                  },timeout)
+                })
+              }
+            }          
           }      
         } catch (e) {
           $.logErr(e, resp);
