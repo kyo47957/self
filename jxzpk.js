@@ -16,7 +16,7 @@ let canPk = true;
     console.log(`开始第${i + 1}个京东账号  ${$.name}`); 
     if (cookie) {
       while (canPk) {
-        await Query();
+        await GetlkEPin();
       }
     }
     console.log(`第${i + 1}个京东账号  ${$.name}  结束`);
@@ -66,10 +66,40 @@ function jsonParse(str) {
   }
 }
 
-function Query() {
+function GetlkEPin() {
   return new Promise((resolve) => {
       let url = {
-        url : `${JD_API_HOST}getUserPkInfo?actId=8&appId=dafbe42d5bff9d82298e5230eb8c3f79&lkEPin=429e6833f5dbf1ab07503341dea56e13`,
+        url : `https://jdjoy.jd.com/saas/framework/encrypt/pin?appId=dafbe42d5bff9d82298e5230eb8c3f79`,
+        headers : {
+          'Origin' : `https://game-cdn.moxigame.cn`,
+          'Cookie' : cookie,
+          'Connection' : `keep-alive`,
+          'Accept' : `*/*`,
+          'Accept-Encoding' : `gzip, deflate, br`,
+          'Accept-Language' : `zh-cn`,
+          'User-Agent' : ua
+        }
+      }
+      $.get(url, async (err, resp, data) => {
+        try {
+          data = JSON.parse(data);
+          if (data.success) {    
+            await Query(data.data);
+            $.wait(1000);              
+          }         
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve()
+        }
+      })
+  })
+}
+
+function Query(lkEPin) {
+  return new Promise((resolve) => {
+      let url = {
+        url : `${JD_API_HOST}getUserPkInfo?actId=8&appId=dafbe42d5bff9d82298e5230eb8c3f79&lkEPin=${lkEPin}`,
         headers : {
           'Origin' : `https://game-cdn.moxigame.cn`,
           'Cookie' : cookie,
@@ -89,7 +119,7 @@ function Query() {
             if (data.data.leftLunchPkNum === 0) 
               canPk = false;
             else 
-              await GetFriends(data.data.actId);
+              await GetFriends(data.data.actId,lkEPin);
             $.wait(1000);              
           }         
         } catch (e) {
@@ -101,10 +131,10 @@ function Query() {
   })
 }
 
-function GetFriends(actId) {
+function GetFriends(actId,lkEPin) {
   return new Promise((resolve) => {
       let url = {
-        url : `${JD_API_HOST}getUserFriends?actId=${actId}&appId=dafbe42d5bff9d82298e5230eb8c3f79&lkEPin=429e6833f5dbf1ab07503341dea56e13`,
+        url : `${JD_API_HOST}getUserFriends?actId=${actId}&appId=dafbe42d5bff9d82298e5230eb8c3f79&lkEPin=${lkEPin}`,
         headers : {
           'Origin' : `https://game-cdn.moxigame.cn`,
           'Cookie' : cookie,
@@ -123,7 +153,7 @@ function GetFriends(actId) {
               if (datas.pkStatus === 2) {
                 console.log(`开始与  ${datas.jdNickname}  进行PK`);
                 $.wait(1000);
-                await doPK(actId,datas.jdNickname,datas.friendPin,datas.relation);          
+                await doPK(actId,datas.jdNickname,datas.friendPin,datas.relation,lkEPin);          
               }
               else
                 console.log(`已与  ${datas.jdNickname}  的PK过`);
@@ -139,10 +169,10 @@ function GetFriends(actId) {
   })
 }
 
-function doPK(actId,name,recipient,relation){
+function doPK(actId,name,recipient,relation,lkEPin){
   return new Promise((resolve) => {
     url = {
-      url : `${JD_API_HOST}launchBattle?actId=${actId}&lkEPin=429e6833f5dbf1ab07503341dea56e13&recipient=${recipient}&relation=${relation}&appId=dafbe42d5bff9d82298e5230eb8c3f79`,
+      url : `${JD_API_HOST}launchBattle?actId=${actId}&lkEPin=${lkEPin}&recipient=${recipient}&relation=${relation}&appId=dafbe42d5bff9d82298e5230eb8c3f79`,
       headers : {
         'Origin' : `https://game-cdn.moxigame.cn`,
         'Cookie' : cookie,
