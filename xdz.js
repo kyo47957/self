@@ -311,7 +311,7 @@ function getAllTask(uId, timeout = 0){
                 let scanC = 0;
                 while (scan) {
                   await doScan(uId,dd.id);
-                  $.wait(1000);
+                  await $.wait(1000);
                   scanC++;
                   if (scanC >= 5)
                     scan = false;
@@ -323,9 +323,9 @@ function getAllTask(uId, timeout = 0){
             else
               console.log('任务：' + dd.taskShowTitle + '已完成');
           }
-          $.wait(1000);
+          await $.wait(1000);
           await doDraw(uId);
-          $.wait(1000);
+          await $.wait(1000);
         } catch (e) {
           $.logErr(e, resp);
         } finally {
@@ -442,7 +442,7 @@ function doScan(uId,id,timeout = 0){
                   })
                 },timeout)
               })
-              $.wait(1000);
+              await $.wait(1000);
             }              
           }  
           else
