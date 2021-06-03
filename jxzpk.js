@@ -1,7 +1,6 @@
 const $ = new Env('京享值PK');
-// const ua=Object.values(require('./jdua.json'))[0];
 let ua=$.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1";
-let cookie = Object.values(require('./jdCookie.json'))[0];
+let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://pengyougou.m.jd.com/like/jxz/';
 let canPk = true;
 !(async () => {
