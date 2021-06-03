@@ -1,3 +1,4 @@
+//修复若干异常bug
 const $ = new Env('京享值PK');
 let ua=$.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1";
 let cookiesArr = [], cookie = '';
@@ -194,8 +195,8 @@ function doPK(actId,name,recipient,relation,lkEPin){
       } finally {
         resolve()
       }
+      await $.wait(2000);
     });
-    await $.wait(2000);
   })
 }
 
