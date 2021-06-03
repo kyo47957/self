@@ -15,9 +15,7 @@ let canPk = true;
     $.name = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]);
     console.log(`开始第${i + 1}个京东账号  ${$.name}`); 
     if (cookie) {
-      while (canPk) {
-        await GetlkEPin();
-      }
+      await GetlkEPin();    
     }
     console.log(`第${i + 1}个京东账号  ${$.name}  结束`);
   }
@@ -83,9 +81,11 @@ function GetlkEPin() {
       $.post(url, async (err, resp, data) => {
         try {
           data = JSON.parse(data);
-          if (data.success) {    
-            await Query(data.data);
-            $.wait(1000);              
+          if (data.success) {  
+            while (canPk) {
+              await Query(data.data);
+              $.wait(1000);
+            }                           
           }         
         } catch (e) {
           $.logErr(e, resp);
