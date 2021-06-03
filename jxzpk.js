@@ -15,6 +15,7 @@ let canPk = true;
     $.name = decodeURIComponent(cookie.match(/pt_pin=(.+?);/) && cookie.match(/pt_pin=(.+?);/)[1]);
     console.log(`开始第${i + 1}个京东账号  ${$.name}`); 
     if (cookie) {
+      canPk = true;
       await GetlkEPin();    
     }
     console.log(`第${i + 1}个京东账号  ${$.name}  结束`);
