@@ -80,7 +80,7 @@ function GetlkEPin() {
           'User-Agent' : ua
         }
       }
-      $.get(url, async (err, resp, data) => {
+      $.post(url, async (err, resp, data) => {
         try {
           data = JSON.parse(data);
           if (data.success) {    
