@@ -10,12 +10,16 @@ let canPk = true;
     return;
   }
   for (let i = 0; i < cookiesArr.length; i++) {
+    console.log('**********************分割线**********************');
     cookie = cookiesArr[i];
+    $.name = decodeURIComponent($.cookie.match(/pt_pin=(.+?);/) && $.cookie.match(/pt_pin=(.+?);/)[1]);
+    console.log(`开始第${i + 1}个京东账号  ${$.name}`); 
     if (cookie) {
       while (canPk) {
         await Query();
       }
     }
+    console.log(`第${i + 1}个京东账号  ${$.name}  结束`);
   }
 })()
     .catch((e) => {
