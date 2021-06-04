@@ -4,6 +4,9 @@ let ua=$.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/
 let cookiesArr = [], cookie = '';
 const JD_API_HOST = 'https://pengyougou.m.jd.com/like/jxz/';
 let canPk = true;
+let myScore = 0;
+let freScore = 0;
+
 !(async () => {
   await requireConfig();
   if (!cookiesArr[0]) {
@@ -84,10 +87,12 @@ function GetlkEPin() {
         try {
           data = JSON.parse(data);
           if (data.success) {  
-            while (canPk) {
+            myScore = await getScore(data.data);
+            console.log(`我的京享值：${myScore}`);
+            // while (canPk) {
               await Query(data.data);
               await $.wait(1000);
-            }                           
+            // }                           
           }         
         } catch (e) {
           $.logErr(e, resp);
@@ -118,10 +123,11 @@ function Query(lkEPin) {
           if (data.success) {    
             console.log(`胜场数：${data.data.winNum}`);
             console.log(`今日剩余PK次数：${data.data.leftLunchPkNum}`);
-            if (data.data.leftLunchPkNum === 0) 
-              canPk = false;
-            else 
-              await GetFriends(data.data.actId,lkEPin);
+            // if (data.data.leftLunchPkNum === 0) 
+            //   canPk = false;
+            // else 
+            if (canPk)
+              await GetFriends(data.data.actId,lkEPin);              
             await $.wait(1000);              
           }         
         } catch (e) {
@@ -153,14 +159,23 @@ function GetFriends(actId,lkEPin) {
           if (data.success) {      
             for (let datas of data.datas) {
               if (datas.pkStatus === 2) {
-                console.log(`开始与  ${datas.jdNickname}  进行PK`);
-                await $.wait(1000);
-                await doPK(actId,datas.jdNickname,datas.friendPin,datas.relation,lkEPin);          
+                freScore = await getScore(datas.friendPin);
+                console.log(`好友的京享值：${freScore}`);
+                if (freScore < myScore) {             
+                  console.log(`开始与  ${datas.jdNickname}  进行PK`);
+                  await $.wait(1000);
+                  await doPK(actId,datas.jdNickname,datas.friendPin,datas.relation,lkEPin);
+                }   
+                else
+                  console.log(`打不过，下一个`);    
               }
               else
                 console.log(`已与  ${datas.jdNickname}  的PK过`);
               await $.wait(1000);
-            }              
+              if (!canPk)
+                break;
+            } 
+            canPk = false;             
           }         
         } catch (e) {
           $.logErr(e, resp);
@@ -188,8 +203,14 @@ function doPK(actId,name,recipient,relation,lkEPin){
     $.get(url, async (err, resp, data) => {
       try {
         data = JSON.parse(data);
-        if (data.success)            
-          console.log(`完成与  ${name}  的PK`);
+        if (data.success) {
+          if (data.data.msg === '今日次数已耗尽') {
+            canPk = false;
+            console.log(`${data.data.msg}`);
+          }       
+          else
+            console.log(`完成与  ${name}  的PK`);
+        }       
       } catch (e) {
         $.logErr(e, resp);
       } finally {
@@ -198,6 +219,40 @@ function doPK(actId,name,recipient,relation,lkEPin){
       await $.wait(2000);
     });
   })
+}
+
+function getScore(fpin) {
+  return new Promise((resolve) => {
+    let options = {
+          "url": "https://jd.moxigame.cn/likejxz/getScore?actId=8&appId=dafbe42d5bff9d82298e5230eb8c3f79&lkEPin="+fpin,
+          "headers": {
+            "Host": "jd.moxigame.cn",
+            "Content-Type": "application/json",
+            "Origin": "https://game-cdn.moxigame.cn",
+            "Connection": "keep-alive",
+            "Accept": " */*",
+            "User-Agent": "",
+            "Accept-Language": "zh-cn",
+            "Accept-Encoding": "gzip, deflate, br"
+          }
+        }
+
+    $.get(options, (err, resp, res) => {
+        let score=0;
+      try {
+        if (res) {
+          let data = $.toObj(res);
+          if (data) {
+              score = data.data
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        resolve(score);
+      }
+    })
+  });
 }
 
 // prettier-ignore
