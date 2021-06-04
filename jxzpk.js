@@ -1,4 +1,4 @@
-//新增京享值查询
+//修改relation
 const $ = new Env('京享值PK');
 let ua=$.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1";
 let cookiesArr = [], cookie = '';
@@ -89,10 +89,7 @@ function GetlkEPin() {
           if (data.success) {  
             myScore = await getScore(data.data);
             console.log(`我的京享值：${myScore}`);
-            // while (canPk) {
-              await Query(data.data);
-              await $.wait(1000);
-            // }                           
+            await Query(data.data);
           }         
         } catch (e) {
           $.logErr(e, resp);
@@ -123,12 +120,10 @@ function Query(lkEPin) {
           if (data.success) {    
             console.log(`胜场数：${data.data.winNum}`);
             console.log(`今日剩余PK次数：${data.data.leftLunchPkNum}`);
-            // if (data.data.leftLunchPkNum === 0) 
-            //   canPk = false;
-            // else 
+            if (data.data.leftLunchPkNum === 0) 
+              canPk = false;
             if (canPk)
               await GetFriends(data.data.actId,lkEPin);              
-            await $.wait(1000);              
           }         
         } catch (e) {
           $.logErr(e, resp);
@@ -164,7 +159,8 @@ function GetFriends(actId,lkEPin) {
                 if (freScore < myScore) {             
                   console.log(`开始与  ${datas.jdNickname}  进行PK`);
                   await $.wait(1000);
-                  await doPK(actId,datas.jdNickname,datas.friendPin,datas.relation,lkEPin);
+                  // datas.relation
+                  await doPK(actId,datas.jdNickname,datas.friendPin,1,lkEPin);
                 }   
                 else
                   console.log(`打不过，下一个`);    
