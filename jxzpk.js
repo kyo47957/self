@@ -159,14 +159,13 @@ function GetFriends(actId,lkEPin) {
                 if (freScore < myScore) {             
                   console.log(`开始与  ${datas.jdNickname}  进行PK`);
                   await $.wait(1000);
-                  // datas.relation
-                  await doPK(actId,datas.jdNickname,datas.friendPin,1,lkEPin);
+                  await doPK(actId,datas.jdNickname,datas.friendPin,datas.relation,lkEPin);
                 }   
                 else
                   console.log(`打不过，下一个`);    
               }
               else
-                console.log(`已与  ${datas.jdNickname}  的PK过`);
+                console.log(`已与  ${datas.jdNickname}  PK过`);
               await $.wait(1000);
               if (!canPk)
                 break;
@@ -227,7 +226,7 @@ function getScore(fpin) {
             "Origin": "https://game-cdn.moxigame.cn",
             "Connection": "keep-alive",
             "Accept": " */*",
-            "User-Agent": "",
+            "User-Agent": ua,
             "Accept-Language": "zh-cn",
             "Accept-Encoding": "gzip, deflate, br"
           }
